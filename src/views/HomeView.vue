@@ -1,10 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-md text-center">
-      <h1 class="text-3xl font-bold text-blue-600 mb-4">
+  <div class="flex items-center justify-center pt-10">
+    <div
+      class="bg-white p-8 rounded-xl shadow-sm border border-stone-200 text-center max-w-lg w-full"
+    >
+      <h1 class="text-2xl font-bold text-stone-800 mb-3">
         {{ appName }}
       </h1>
-      <p class="text-gray-600">
+      <p class="text-stone-600 text-sm leading-relaxed">
         Kurumsal veritabanı altyapısına ve yönetim araçlarına erişmek için
         paneli kullanabilirsiniz.
       </p>
@@ -17,6 +19,5 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-
 const appName = computed(() => store.state.appName);
 </script>

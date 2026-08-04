@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import MainLayout from '../layouts/MainLayout.vue';
 
-// Şimdilik test amaçlı tek bir sayfa bileşeni tanımlayalım
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('../views/HomeView.vue'),
+    component: MainLayout,
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('../views/HomeView.vue'),
+      },
+    ],
   },
 ];
 

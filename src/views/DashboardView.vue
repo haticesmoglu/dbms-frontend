@@ -88,6 +88,69 @@
         <v-chart class="w-full h-full" :option="lineChartOption" autofit />
       </div>
     </div>
+
+    <!-- Son İşlem Kayıtları -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-semibold text-gray-800">
+          Son İşlem Kayıtları
+        </h3>
+        <span class="text-xs text-gray-400 font-mono">Canlı Akış</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-600">
+          <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b">
+            <tr>
+              <th class="py-3 px-4">Kullanıcı</th>
+              <th class="py-3 px-4">Veritabanı</th>
+              <th class="py-3 px-4">İşlem Türü</th>
+              <th class="py-3 px-4">Tarih / Saat</th>
+              <th class="py-3 px-4">Durum</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr
+              v-for="log in recentLogs"
+              :key="log.id"
+              class="hover:bg-gray-50/50"
+            >
+              <td class="py-3 px-4 font-medium text-gray-900">
+                {{ log.user }}
+              </td>
+              <td class="py-3 px-4">{{ log.db }}</td>
+              <td class="py-3 px-4">
+                <span
+                  class="px-2 py-1 rounded-md text-xs font-mono bg-gray-100 text-gray-700"
+                >
+                  {{ log.action }}
+                </span>
+              </td>
+              <td class="py-3 px-4 text-xs text-gray-500">{{ log.time }}</td>
+              <td class="py-3 px-4">
+                <span
+                  :class="
+                    log.status === 'Başarılı'
+                      ? 'text-emerald-700 bg-emerald-50'
+                      : 'text-rose-700 bg-rose-50'
+                  "
+                  class="px-2.5 py-0.5 rounded-full text-xs font-medium inline-flex items-center gap-1"
+                >
+                  <span
+                    :class="
+                      log.status === 'Başarılı'
+                        ? 'bg-emerald-500'
+                        : 'bg-rose-500'
+                    "
+                    class="w-1.5 h-1.5 rounded-full"
+                  ></span>
+                  {{ log.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -114,6 +177,41 @@ use([
   TooltipComponent,
   LegendComponent,
   GridComponent,
+]);
+
+const recentLogs = ref([
+  {
+    id: 1,
+    user: 'sude.yilmaz',
+    db: 'E-Ticaret',
+    action: 'SELECT Sorgusu',
+    time: '14:45:12',
+    status: 'Başarılı',
+  },
+  {
+    id: 2,
+    user: 'bade.ozturk',
+    db: 'Kullanıcılar',
+    action: 'Yedekleme',
+    time: '14:40:00',
+    status: 'Başarılı',
+  },
+  {
+    id: 3,
+    user: 'batuhan.kaya',
+    db: 'Lojistik',
+    action: 'UPDATE Sorgusu',
+    time: '14:32:18',
+    status: 'Başarılı',
+  },
+  {
+    id: 4,
+    user: 'system_auto',
+    db: 'Analiz',
+    action: 'Index Temizliği',
+    time: '14:15:00',
+    status: 'Başarılı',
+  },
 ]);
 
 const pieChartOption = ref({

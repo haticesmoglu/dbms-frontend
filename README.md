@@ -25,3 +25,10 @@ Projede 1. hafta kurulumlarını tamamlayıp kurumsal klasör mimarisini oluştu
 npm install
 npm run dev
 ```
+
+## 2. Hafta - Dashboard Modülü
+
+- Projeye Vue-ECharts ve Lucide ikon paketlerini kurup entegrasyonlarını tamamladım.
+- Sayfa düzeni için MainLayout, Sidebar ve Header bileşenlerini tasarlayıp responsive hale getirdim.
+- Veritabanı trafiğini ve durumlarını görselleştirmek adına Pie, Bar ve Line chart grafiklerini ekledim.
+- Dashboard ekranına veritabanı, tablo, kullanıcı ve aktif bağlantı istatistik kartları ile canlı Son İşlem Kayıtları tablosunu ekledim.

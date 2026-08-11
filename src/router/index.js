@@ -11,6 +11,11 @@ const routes = [
         name: 'Dashboard',
         component: () => import('../views/DashboardView.vue'),
       },
+      {
+        path: 'databases',
+        name: 'Databases',
+        component: () => import('../views/DatabaseView.vue'),
+      },
     ],
   },
 ];

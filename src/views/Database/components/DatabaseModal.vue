@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 
@@ -124,6 +124,23 @@ const { handleSubmit, errors, resetForm, setValues } = useForm({
 const { value: name } = useField('name');
 const { value: charset } = useField('charset');
 const { value: status } = useField('status');
+
+//düzenle butonuna tıklandığında veriler formda dursun
+watch(
+  () => props.editData,
+  (newVal) => {
+    if (newVal) {
+      setValues({
+        name: newVal.name || '',
+        charset: newVal.charset || 'utf8mb4',
+        status: newVal.status || 'Active',
+      });
+    } else {
+      resetForm();
+    }
+  },
+  { immediate: true }
+);
 
 const close = () => {
   resetForm();

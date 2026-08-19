@@ -8,7 +8,8 @@
         </p>
       </div>
       <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+        @click="openCreateModal"
+        class="px-4 py-2 bg-blue-800 text-white rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors"
       >
         + Yeni Veritabanı
       </button>
@@ -103,8 +104,11 @@
               </span>
             </td>
             <td class="py-4 px-6 text-right space-x-2">
-              <button class="text-blue-600 hover:underline text-xs font-medium">
-                Yönet
+              <button
+                @click="openEditModal(db)"
+                class="text-blue-600 hover:underline text-xs font-medium"
+              >
+                Düzenle
               </button>
             </td>
           </tr>
@@ -141,6 +145,12 @@
         </div>
       </div>
     </div>
+    <DatabaseModal
+      :is-open="isModalOpen"
+      :edit-data="selectedDb"
+      @close="closeModal"
+      @save="handleSaveDatabase"
+    />
   </div>
 </template>
 
@@ -148,6 +158,7 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { Search } from 'lucide-vue-next';
 import { databaseService } from '../services/database.service';
+import DatabaseModal from './Database/components/DatabaseModal.vue';
 
 const rawDatabases = ref([]);
 const searchQuery = ref('');
@@ -156,6 +167,33 @@ const isLoading = ref(true);
 
 const sortKey = ref('name');
 const sortOrder = ref('asc');
+
+const isModalOpen = ref(false);
+const selectedDb = ref(null);
+
+const openCreateModal = () => {
+  selectedDb.value = null;
+  isModalOpen.value = true;
+};
+
+const openEditModal = (db) => {
+  selectedDb.value = { ...db };
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  selectedDb.value = null;
+};
+
+const handleSaveDatabase = async (formData) => {
+  if (selectedDb.value) {
+    await databaseService.updateDatabase(selectedDb.value.id, formData);
+  } else {
+    await databaseService.createDatabase(formData);
+  }
+  rawDatabases.value = await databaseService.getAllDatabases();
+};
 
 //pagination
 const currentPage = ref(1);

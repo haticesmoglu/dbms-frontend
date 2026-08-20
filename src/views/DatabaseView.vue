@@ -105,10 +105,22 @@
             </td>
             <td class="py-4 px-6 text-right space-x-2">
               <button
+                @click="openDetailModal(db)"
+                class="text-slate-600 hover:underline text-xs font-medium"
+              >
+                Detay
+              </button>
+              <button
                 @click="openEditModal(db)"
                 class="text-blue-600 hover:underline text-xs font-medium"
               >
                 Düzenle
+              </button>
+              <button
+                @click="handleDelete(db.id)"
+                class="text-red-600 hover:underline text-xs font-medium"
+              >
+                Sil
               </button>
             </td>
           </tr>
@@ -152,6 +164,11 @@
       @save="handleSaveDatabase"
     />
   </div>
+  <DatabaseDetailModal
+    :is-open="isDetailOpen"
+    :db="detailData"
+    @close="isDetailOpen = false"
+  />
 </template>
 
 <script setup>
@@ -159,13 +176,14 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { Search } from 'lucide-vue-next';
 import { databaseService } from '../services/database.service';
 import DatabaseModal from './Database/components/DatabaseModal.vue';
+import DatabaseDetailModal from './Database/components/DatabaseDetailModal.vue';
 
 const rawDatabases = ref([]);
 const searchQuery = ref('');
 const selectedStatus = ref('ALL');
 const isLoading = ref(true);
 
-const sortKey = ref('name');
+const sortKey = ref('');
 const sortOrder = ref('asc');
 
 const isModalOpen = ref(false);
@@ -184,6 +202,21 @@ const openEditModal = (db) => {
 const closeModal = () => {
   isModalOpen.value = false;
   selectedDb.value = null;
+};
+
+const isDetailOpen = ref(false);
+const detailData = ref(null);
+
+const openDetailModal = (db) => {
+  detailData.value = db;
+  isDetailOpen.value = true;
+};
+
+const handleDelete = async (id) => {
+  if (confirm('Bu veritabanını silmek istediğinize emin misiniz?')) {
+    await databaseService.deleteDatabase(id);
+    rawDatabases.value = await databaseService.getAllDatabases();
+  }
 };
 
 const handleSaveDatabase = async (formData) => {

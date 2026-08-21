@@ -41,3 +41,9 @@ Bu hafta kapsamında, yönetim panelinin veritabanı yönetim arayüzünü ve ve
 - **Canlı Arama ve Durum Filtreleme:** Vue 3 `computed` reaktivitesini kullanarak kullanıcıların veritabanı adına göre anlık arama yapabileceği ve duruma (_Active, Inactive, Maintenance_) göre filtreleyebileceği filtreleme mekanizmasını geliştirdim.
 - **Dinamik Kolon Sıralaması (Sorting):** Tablo başlıklarına (`th`) tıklama etkileşimi kazandırarak isim ve tablo sayısına göre küçükten büyüğe / büyükten küçüğe dinamik sıralama mantığını koda döktüm.
 - **Sayfalama (Pagination):** Verilerin kullanıcıyı yormadan 4'erli parçalar halinde listelenmesini sağladım; önceki/sonraki kontrollerini ve filtreleme değiştiğinde sayfayı otomatik başa saran akışı tamamladım.
+
+## 4. Hafta - CRUD İşlemleri ve Form Yönetimi
+
+- Vee-Validate ve Yup kütüphaneleriyle form validasyonlarını entegre ettim.
+- Database Create, Read (Detail), Update ve Delete (CRUD) akışlarını tamamladım.
+- Modal tabanlı kullanıcı etkileşimlerini oluşturdum.

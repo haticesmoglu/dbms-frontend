@@ -8,7 +8,8 @@
         </p>
       </div>
       <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+        @click="openCreateModal"
+        class="px-4 py-2 bg-blue-800 text-white rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors"
       >
         + Yeni Veritabanı
       </button>
@@ -103,8 +104,23 @@
               </span>
             </td>
             <td class="py-4 px-6 text-right space-x-2">
-              <button class="text-blue-600 hover:underline text-xs font-medium">
-                Yönet
+              <button
+                @click="openDetailModal(db)"
+                class="text-slate-600 hover:underline text-xs font-medium"
+              >
+                Detay
+              </button>
+              <button
+                @click="openEditModal(db)"
+                class="text-blue-600 hover:underline text-xs font-medium"
+              >
+                Düzenle
+              </button>
+              <button
+                @click="handleDelete(db.id)"
+                class="text-red-600 hover:underline text-xs font-medium"
+              >
+                Sil
               </button>
             </td>
           </tr>
@@ -141,21 +157,76 @@
         </div>
       </div>
     </div>
+    <DatabaseModal
+      :is-open="isModalOpen"
+      :edit-data="selectedDb"
+      @close="closeModal"
+      @save="handleSaveDatabase"
+    />
   </div>
+  <DatabaseDetailModal
+    :is-open="isDetailOpen"
+    :db="detailData"
+    @close="isDetailOpen = false"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
 import { Search } from 'lucide-vue-next';
 import { databaseService } from '../services/database.service';
+import DatabaseModal from './Database/components/DatabaseModal.vue';
+import DatabaseDetailModal from './Database/components/DatabaseDetailModal.vue';
 
 const rawDatabases = ref([]);
 const searchQuery = ref('');
 const selectedStatus = ref('ALL');
 const isLoading = ref(true);
 
-const sortKey = ref('name');
+const sortKey = ref('');
 const sortOrder = ref('asc');
+
+const isModalOpen = ref(false);
+const selectedDb = ref(null);
+
+const openCreateModal = () => {
+  selectedDb.value = null;
+  isModalOpen.value = true;
+};
+
+const openEditModal = (db) => {
+  selectedDb.value = { ...db };
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  selectedDb.value = null;
+};
+
+const isDetailOpen = ref(false);
+const detailData = ref(null);
+
+const openDetailModal = (db) => {
+  detailData.value = db;
+  isDetailOpen.value = true;
+};
+
+const handleDelete = async (id) => {
+  if (confirm('Bu veritabanını silmek istediğinize emin misiniz?')) {
+    await databaseService.deleteDatabase(id);
+    rawDatabases.value = await databaseService.getAllDatabases();
+  }
+};
+
+const handleSaveDatabase = async (formData) => {
+  if (selectedDb.value) {
+    await databaseService.updateDatabase(selectedDb.value.id, formData);
+  } else {
+    await databaseService.createDatabase(formData);
+  }
+  rawDatabases.value = await databaseService.getAllDatabases();
+};
 
 //pagination
 const currentPage = ref(1);

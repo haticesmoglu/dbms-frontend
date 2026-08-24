@@ -104,6 +104,12 @@
               </span>
             </td>
             <td class="py-4 px-6 text-right space-x-2">
+              <router-link
+                :to="`/databases/${db.id}/tables`"
+                class="text-emerald-600 hover:underline text-xs font-medium"
+              >
+                Tablolar
+              </router-link>
               <button
                 @click="openDetailModal(db)"
                 class="text-slate-600 hover:underline text-xs font-medium"

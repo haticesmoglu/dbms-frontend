@@ -19,7 +19,7 @@
       </div>
       <button
         @click="openCreateModal"
-        class="w-full sm:w-auto px-4 py-2 bg-blue-700 text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm"
+        class="w-full sm:w-auto px-4 py-2 bg-blue-800 text-white rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors shadow-sm"
       >
         + Yeni Tablo
       </button>

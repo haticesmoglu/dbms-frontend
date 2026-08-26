@@ -41,7 +41,9 @@
             v-model="engine"
             class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500 text-gray-700"
           >
-            <option value="InnoDB">InnoDB(Varsayılan)</option>
+            <option value="InnoDB">
+              InnoDB
+            </option>
             <option value="MyISAM">MyISAM</option>
             <option value="Memory">Memory</option>
           </select>

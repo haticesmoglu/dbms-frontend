@@ -93,6 +93,12 @@
         </table>
       </div>
     </div>
+    <TableModal
+      :is-open="isModalOpen"
+      :edit-data="selectedTable"
+      @close="closeModal"
+      @save="handleSaveTable"
+    />
   </div>
 </template>
 
@@ -101,12 +107,15 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { Table as TableIcon } from 'lucide-vue-next';
 import { tableService } from '../services/table.service';
+import TableModal from './Table/components/TableModal.vue';
 
 const route = useRoute();
 const databaseId = route.params.databaseId || 1;
 
 const tables = ref([]);
 const isLoading = ref(true);
+const isModalOpen = ref(false);
+const selectedTable = ref(null);
 
 const loadTables = async () => {
   isLoading.value = true;
@@ -116,7 +125,33 @@ const loadTables = async () => {
 
 onMounted(loadTables);
 
-const openCreateModal = () => {};
-const openEditModal = (t) => {};
-const handleDelete = (id) => {};
+const openCreateModal = () => {
+  selectedTable.value = null;
+  isModalOpen.value = true;
+};
+const openEditModal = (table) => {
+  selectedTable.value = { ...table };
+  isModalOpen.value = true;
+};
+const closeModal = () => {
+  isModalOpen.value = false;
+  selectedTable.value = null;
+};
+const handleSaveTable = async (formData) => {
+  if (selectedTable.value) {
+    await tableService.updateTable(selectedTable.value.id, formData);
+  } else {
+    await tableService.createTable({
+      ...formData,
+      databaseId: Number(databaseId),
+    });
+  }
+  await loadTables();
+};
+const handleDelete = async (id) => {
+  if (confirm('Bu tabloyu silmek istediğinize emin misiniz?')) {
+    await tableService.deleteTable(id);
+    await loadTables();
+  }
+};
 </script>

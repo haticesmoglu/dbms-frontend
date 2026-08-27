@@ -47,3 +47,13 @@ Bu hafta kapsamında, yönetim panelinin veritabanı yönetim arayüzünü ve ve
 - Vee-Validate ve Yup kütüphaneleriyle form validasyonlarını entegre ettim.
 - Database Create, Read (Detail), Update ve Delete (CRUD) akışlarını tamamladım.
 - Modal tabanlı kullanıcı etkileşimlerini oluşturdum.
+
+## 5. Hafta - Table Yönetimi ve Responsive Arayüz
+
+Bu hafta kapsamında, veritabanlarına bağlı alt tabloların listelenmesi, yönetilmesi ve mobil uyumlu arayüz mimarisini geliştirdim:
+
+- **İlişkisel Servis & Rota Yapısı:** Dinamik rota parametresi (`/databases/:databaseId/tables`) ile seçilen veritabanına özel veri akışı sağlayan `table.service.js` servis katmanını kurdum.
+- **Responsive Tablo Mimarisi:** Mobil, tablet ve masaüstü ekranlarda yatay kaydırma desteğiyle taşma yapmayan, modern `overflow-x-auto` ve Tailwind tabanlı esnek tablo görünümü geliştirdim.
+- **Tablo CRUD ve Validasyon Akışı:** Vee-Validate ve Yup kullanarak tablo adı ve depolama motoru (`InnoDB`, `MyISAM`, `Memory`) seçimlerini doğrulayan `TableModal` bileşenini kodladım.
+- **Modüller Arası Geçiş:** Veritabanı yönetim tablosuna doğrudan ilgili veritabanının tablo listesine yönlendiren dinamik bağlantıları entegre ettim.
+- **Özel Silme Pop-up'ı (UI/UX İyileştirmesi):** Tarayıcının varsayılan `confirm()` diyaloglarını kaldırarak hem veritabanı hem de tablo silme adımları için Tailwind destekli, güvenli ve modern onay pop-up modalları geliştirdim.

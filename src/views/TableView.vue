@@ -82,8 +82,8 @@
                   Düzenle
                 </button>
                 <button
-                  @click="handleDelete(table.id)"
-                  class="text-red-600 hover:underline text-xs font-medium"
+                  @click="openDeletePopup(table.id)"
+                  class="text-sm font-medium text-red-600 hover:text-red-800"
                 >
                   Sil
                 </button>
@@ -99,6 +99,52 @@
       @close="closeModal"
       @save="handleSaveTable"
     />
+    <div
+      v-if="isDeletePopupOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    >
+      <div
+        class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 text-center"
+      >
+        <div
+          class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+        </div>
+
+        <h3 class="text-lg font-bold text-slate-800">Tabloyu Sil</h3>
+        <p class="text-sm text-slate-500 mt-2">
+          Bu tabloyu silmek istediğinize emin misiniz?
+        </p>
+
+        <div class="mt-6 flex justify-center gap-3">
+          <button
+            @click="closeDeletePopup"
+            class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition"
+          >
+            İptal
+          </button>
+          <button
+            @click="confirmDelete"
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition"
+          >
+            Evet, Sil
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -116,6 +162,9 @@ const tables = ref([]);
 const isLoading = ref(true);
 const isModalOpen = ref(false);
 const selectedTable = ref(null);
+
+const isDeletePopupOpen = ref(false);
+const tableToDeleteId = ref(null);
 
 const loadTables = async () => {
   isLoading.value = true;
@@ -148,10 +197,23 @@ const handleSaveTable = async (formData) => {
   }
   await loadTables();
 };
-const handleDelete = async (id) => {
-  if (confirm('Bu tabloyu silmek istediğinize emin misiniz?')) {
-    await tableService.deleteTable(id);
+
+const openDeletePopup = (id) => {
+  tableToDeleteId.value = id;
+  isDeletePopupOpen.value = true;
+};
+
+const confirmDelete = async () => {
+  if (tableToDeleteId.value) {
+    await tableService.deleteTable(tableToDeleteId.value);
     await loadTables();
   }
+  isDeletePopupOpen.value = false;
+  tableToDeleteId.value = null;
+};
+
+const closeDeletePopup = () => {
+  isDeletePopupOpen.value = false;
+  tableToDeleteId.value = null;
 };
 </script>

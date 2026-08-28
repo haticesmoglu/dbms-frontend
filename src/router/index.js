@@ -21,6 +21,11 @@ const routes = [
         name: 'Tables',
         component: () => import('../views/TableView.vue'),
       },
+      {
+        path: 'databases/:databaseId/tables/:tableId/columns',
+        name: 'Columns',
+        component: () => import('../views/ColumnView.vue'),
+      },
     ],
   },
 ];

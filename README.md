@@ -57,3 +57,13 @@ Bu hafta kapsamında, veritabanlarına bağlı alt tabloların listelenmesi, yö
 - **Tablo CRUD ve Validasyon Akışı:** Vee-Validate ve Yup kullanarak tablo adı ve depolama motoru (`InnoDB`, `MyISAM`, `Memory`) seçimlerini doğrulayan `TableModal` bileşenini kodladım.
 - **Modüller Arası Geçiş:** Veritabanı yönetim tablosuna doğrudan ilgili veritabanının tablo listesine yönlendiren dinamik bağlantıları entegre ettim.
 - **Özel Silme Pop-up'ı (UI/UX İyileştirmesi):** Tarayıcının varsayılan `confirm()` diyaloglarını kaldırarak hem veritabanı hem de tablo silme adımları için Tailwind destekli, güvenli ve modern onay pop-up modalları geliştirdim.
+
+## 6. Hafta - Kolon Yönetimi
+
+Bu hafta kapsamında, tablolara bağlı alt kolonların listelenmesi, yönetilmesi ve tablo şemasının dışa aktarılma mimarisini geliştirdim:
+
+- **İlişkisel Servis & Rota Yapısı:** Dinamik rota parametresi (`/databases/:databaseId/tables/:tableId/columns`) ile seçilen tabloya özel veri akışı sağlayan `column.service.js` servis katmanını ve `ColumnView.vue` görünümünü kurdum.
+- **Kolon CRUD ve Validasyon Akışı:** Vee-Validate ve Yup kullanarak kolon adı, veri tipi, varsayılan değer ile kısıtlamaları (`PK`, `Nullable`, `Auto Increment`) doğrulayan `ColumnModal` bileşenini kodladım.
+- **Excel & CSV Dışa Aktarma Modülü:** Harici kütüphane bağımlılığı olmadan yerel `Blob` API mimarisini kullanarak tablo şemasını `.csv` / Excel formatında indiren `excelGenerator.js` yardımcı servisini geliştirdim.
+- **Karakter ve Format Uyumluluğu:** Türkçe karakterlerin Excel üzerinde bozulmadan açılabilmesi için UTF-8 BOM (`\uFEFF`) desteğini ve Excel hücre yapısına uygun noktalı virgül (`;`) ayracını entegre ettim.
+- **Özel Uyarı ve Silme Pop-up'ları (UI/UX İyileştirmesi):** Boş tablolarda şema indirmeyi engelleyen `FileWarning` uyarı pop-up'ını, güvenli silme onay modalını ve kısıtlamaları görselleştiren Tailwind tabanlı rozetleri (`PK`, `NULL`, `A_I`) geliştirdim.

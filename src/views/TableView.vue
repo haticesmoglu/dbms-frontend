@@ -81,6 +81,12 @@
                 >
                   Düzenle
                 </button>
+                <router-link
+                  :to="`/databases/${databaseId}/tables/${table.id}/columns`"
+                  class="text-emerald-700 hover:underline text-xs font-medium"
+                >
+                  Kolonlar
+                </router-link>
                 <button
                   @click="openDeletePopup(table.id)"
                   class="text-sm font-medium text-red-600 hover:text-red-800"

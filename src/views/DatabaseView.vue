@@ -122,7 +122,12 @@
               >
                 Düzenle
               </button>
-              <button @click="openDeletePopup(db.id)">Sil</button>
+              <button
+                @click="openDeletePopup(db.id)"
+                class="text-red-600 hover:underline text-xs font-medium"
+              >
+                Sil
+              </button>
             </td>
           </tr>
         </tbody>

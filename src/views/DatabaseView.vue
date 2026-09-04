@@ -225,15 +225,17 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
+import { useStore } from 'vuex';
 import { Search } from 'lucide-vue-next';
-import { databaseService } from '../services/database.service';
 import DatabaseModal from './Database/components/DatabaseModal.vue';
 import DatabaseDetailModal from './Database/components/DatabaseDetailModal.vue';
 
-const rawDatabases = ref([]);
+const store = useStore();
+
+const rawDatabases = computed(() => store.getters['database/allDatabases']);
 const searchQuery = ref('');
 const selectedStatus = ref('ALL');
-const isLoading = ref(true);
+const isLoading = computed(() => store.getters['database/isLoading']);
 
 const sortKey = ref('');
 const sortOrder = ref('asc');
@@ -274,8 +276,7 @@ const openDeletePopup = (id) => {
 
 const confirmDelete = async () => {
   if (dbToDeleteId.value) {
-    await databaseService.deleteDatabase(dbToDeleteId.value);
-    rawDatabases.value = await databaseService.getAllDatabases();
+    await store.dispatch('database/deleteDatabase', dbToDeleteId.value);
   }
   isDeletePopupOpen.value = false;
   dbToDeleteId.value = null;
@@ -288,11 +289,14 @@ const closeDeletePopup = () => {
 
 const handleSaveDatabase = async (formData) => {
   if (selectedDb.value) {
-    await databaseService.updateDatabase(selectedDb.value.id, formData);
+    await store.dispatch('database/updateDatabase', {
+      id: selectedDb.value.id,
+      data: formData,
+    });
   } else {
-    await databaseService.createDatabase(formData);
+    await store.dispatch('database/createDatabase', formData);
   }
-  rawDatabases.value = await databaseService.getAllDatabases();
+  closeModal();
 };
 
 //pagination
@@ -316,10 +320,8 @@ const changePage = (page) => {
   }
 };
 
-onMounted(async () => {
-  isLoading.value = true;
-  rawDatabases.value = await databaseService.getAllDatabases();
-  isLoading.value = false;
+onMounted(() => {
+  store.dispatch('database/fetchDatabases');
 });
 
 const filteredDatabases = computed(() => {

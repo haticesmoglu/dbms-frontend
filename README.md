@@ -67,3 +67,12 @@ Bu hafta kapsamında, tablolara bağlı alt kolonların listelenmesi, yönetilme
 - **Excel & CSV Dışa Aktarma Modülü:** Harici kütüphane bağımlılığı olmadan yerel `Blob` API mimarisini kullanarak tablo şemasını `.csv` / Excel formatında indiren `excelGenerator.js` yardımcı servisini geliştirdim.
 - **Karakter ve Format Uyumluluğu:** Türkçe karakterlerin Excel üzerinde bozulmadan açılabilmesi için UTF-8 BOM (`\uFEFF`) desteğini ve Excel hücre yapısına uygun noktalı virgül (`;`) ayracını entegre ettim.
 - **Özel Uyarı ve Silme Pop-up'ları (UI/UX İyileştirmesi):** Boş tablolarda şema indirmeyi engelleyen `FileWarning` uyarı pop-up'ını, güvenli silme onay modalını ve kısıtlamaları görselleştiren Tailwind tabanlı rozetleri (`PK`, `NULL`, `A_I`) geliştirdim.
+
+## 7. Hafta - Vuex ile Modüler Global State Yönetimi
+
+Bu hafta kapsamında, bileşenlere dağılmış verileri merkezi hafızaya toplayarak kurumsal modüler state mimarisini kurdum:
+
+- **Modüler Store Mimarisi:** Dokümanda zorunlu tutulan `auth`, `database`, `table`, `user` ve `notification` modüllerini `namespaced: true` yapısıyla ayrıştırdım.
+- **Action, Mutation ve Getter Entegrasyonu:** Asenkron servis isteklerini `actions` katmanında yönetip, reaktif state güncellemelerini `mutations` üzerinden sağladım; filtrelenmiş verileri bileşenlere `getters` ile sundum.
+- **Bileşenlerin Store'a Taşınması:** `DatabaseView` ve alt bileşenlerini doğrudan servis bağımlılığından kurtararak `useStore()`, `dispatch` ve `computed` üzerinden Vuex store'a bağladım.
+- **Global Bildirim (Toast) Sistemi:** İşlem başarı veya hata durumlarını tüm sayfalardan tetiklenebilecek merkezi bir `notification` modülü ve `App.vue` bildirim arayüzü ile kullanıcıya sundum.
